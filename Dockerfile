@@ -12,6 +12,11 @@ FROM  ubuntu:20.04
 RUN set -ex; \
     export DEBIAN_FRONTEND=noninteractive; \
     apt-get update && \
-    apt-get install -y libelf-dev
+    apt-get install -y libelf-dev linux-tools-generic curl git && \
+    git clone http://github.com/brendangregg/FlameGraph
 
 COPY --from=builder /libbpf-tools/bin/ /usr/bin/
+
+#Copy the offcpu-profile.sh script to /usr/bin
+COPY offcpu-profile.sh /usr/bin/
+RUN chmod +x /usr/bin/offcpu-profile.sh
